@@ -9,18 +9,18 @@ import aiohttp
 import async_timeout
 
 
-class IntegrationBlueprintApiClientError(Exception):
+class ImmichStatisticsApiClientError(Exception):
     """Exception to indicate a general API error."""
 
 
-class IntegrationBlueprintApiClientCommunicationError(
-    IntegrationBlueprintApiClientError,
+class ImmichStatisticsApiClientCommunicationError(
+    ImmichStatisticsApiClientError,
 ):
     """Exception to indicate a communication error."""
 
 
-class IntegrationBlueprintApiClientAuthenticationError(
-    IntegrationBlueprintApiClientError,
+class ImmichStatisticsApiClientAuthenticationError(
+    ImmichStatisticsApiClientError,
 ):
     """Exception to indicate an authentication error."""
 
@@ -29,31 +29,32 @@ def _verify_response_or_raise(response: aiohttp.ClientResponse) -> None:
     """Verify that the response is valid."""
     if response.status in (401, 403):
         msg = "Invalid credentials"
-        raise IntegrationBlueprintApiClientAuthenticationError(
+        raise ImmichStatisticsApiClientAuthenticationError(
             msg,
         )
     response.raise_for_status()
 
 
-class IntegrationBlueprintApiClient:
+class ImmichStatisticsApiClient:
     """Sample API Client."""
 
     def __init__(
         self,
-        username: str,
-        password: str,
+        url: str,
+        api_key: str,
         session: aiohttp.ClientSession,
     ) -> None:
         """Sample API Client."""
-        self._username = username
-        self._password = password
+        self._url = url
+        self._api_key = api_key
         self._session = session
 
     async def async_get_data(self) -> Any:
         """Get data from the API."""
         return await self._api_wrapper(
             method="get",
-            url="https://jsonplaceholder.typicode.com/posts/1",
+            url=self._url + "/api/server/statistics",
+            headers={"x-api-key": self._api_key, "Accept": "application/json"},
         )
 
     async def async_set_title(self, value: str) -> Any:
@@ -86,16 +87,16 @@ class IntegrationBlueprintApiClient:
 
         except TimeoutError as exception:
             msg = f"Timeout error fetching information - {exception}"
-            raise IntegrationBlueprintApiClientCommunicationError(
+            raise ImmichStatisticsApiClientCommunicationError(
                 msg,
             ) from exception
         except (aiohttp.ClientError, socket.gaierror) as exception:
             msg = f"Error fetching information - {exception}"
-            raise IntegrationBlueprintApiClientCommunicationError(
+            raise ImmichStatisticsApiClientCommunicationError(
                 msg,
             ) from exception
         except Exception as exception:  # pylint: disable=broad-except
             msg = f"Something really wrong happened! - {exception}"
-            raise IntegrationBlueprintApiClientError(
+            raise ImmichStatisticsApiClientError(
                 msg,
             ) from exception

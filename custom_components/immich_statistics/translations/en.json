@@ -2,15 +2,15 @@
     "config": {
         "step": {
             "user": {
-                "description": "If you need help with the configuration have a look here: https://github.com/ludeeus/integration_blueprint",
+                "description": "If you need help with the configuration have a look here: https://github.com/philipp-luettecke/immich_statistics",
                 "data": {
-                    "username": "Username",
-                    "password": "Password"
+                    "url": "URL for the Immich instance",
+                    "api_key": "API Key for accessing the Immich instance"
                 }
             }
         },
         "error": {
-            "auth": "Username/Password is wrong.",
+            "auth": "API key is wrong.",
             "connection": "Unable to connect to the server.",
             "unknown": "Unknown error occurred."
         },

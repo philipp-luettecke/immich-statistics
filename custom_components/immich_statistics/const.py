@@ -1,8 +1,8 @@
-"""Constants for integration_blueprint."""
+"""Constants for immich_statistics."""
 
 from logging import Logger, getLogger
 
 LOGGER: Logger = getLogger(__package__)
 
-DOMAIN = "integration_blueprint"
+DOMAIN = "immich_statistics"
 ATTRIBUTION = "Data provided by http://jsonplaceholder.typicode.com/"
